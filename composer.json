@@ -1,0 +1,31 @@
+{
+    "name": "vmatteus/omnipay-elavon",
+    "type": "library",
+    "description": "Elavon payments driver for the Omnipay payment processing library",
+    "keywords": [
+        "elavon",
+        "gateway",
+        "merchant",
+        "omnipay",        
+        "pay",
+        "payment",
+        "payments"
+    ],
+    "homepage": "https://github.com/vmatteus/omnipay-elavon",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vinicius Matteus",
+            "email": "vmatteus@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Omnipay\\Elavon\\" : "src/" }
+    },
+    "require": {
+        "omnipay/common": "~2.0"
+    },
+    "require-dev": {
+        "omnipay/tests": "~2.0"
+    }
+}
