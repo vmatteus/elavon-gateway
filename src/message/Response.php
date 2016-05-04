@@ -1,11 +1,11 @@
 <?php 
 
-namespace App\Models\Elavon\Message;
+namespace Omnipay\Elavon\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
 
-class ElavonResponse extends AbstractResponse
+class Response extends AbstractResponse
 {
     public function __construct(RequestInterface $request, $data)
     {

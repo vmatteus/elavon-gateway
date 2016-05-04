@@ -5,7 +5,7 @@ namespace Omnipay\Elavon\Message;
 use Omnipay\Common\CreditCard;
 use Omnipay\Common\Message\AbstractRequest;
 
-abstract class ElavonAbstractRequest extends AbstractRequest
+abstract class AbstractRequest extends AbstractRequest
 {
     protected $testEndpoint = 'https://qaswsgate.elavon.com.br/wsgate/requesthandler';
     protected $liveEndpoint = 'https://wsgate.elavon.com.br/wsgate/requesthandler';
@@ -38,8 +38,8 @@ abstract class ElavonAbstractRequest extends AbstractRequest
     protected function getBaseData()
     {
         $data = array(
-            'TerminalID' => $this->getMerchantId(),
-            'RegKey' => $this->getUsername(),
+            'TerminalID' => $this->getTerminalID(),
+            'RegKey' => $this->getRegKey(),
         );
 
         return $data;
