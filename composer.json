@@ -1,6 +1,5 @@
 {
     "name": "vmatteus/omnipay-elavon",
-    "minimum-stability": "dev",
     "type": "library",
     "description": "Elavon payments driver for the Omnipay payment processing library",
     "keywords": [
