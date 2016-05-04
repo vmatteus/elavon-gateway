@@ -12,7 +12,7 @@ class AuthorizeRequest extends AbstractRequest
 
         $data = new \SimpleXMLElement('<DoPayment />');
         $data->addAttribute('version', '1.1.0');
-        $data->addAttribute('xmlns', $this->getEndpoint());
+        $data->addAttribute('xmlns', 'http://wsgate.elavon.com.br');
         
         $data->addChild('Language', 'PT-BR');
         $data->addChild('TransactionID', uniqid()); // TROCAR
@@ -32,14 +32,12 @@ class AuthorizeRequest extends AbstractRequest
 
         $xml = $document->saveXML();
 
-        dd($xml);
-
-        $httpResponse = $this->httpClient->post($this->getEndpoint() . '/process.do', null, http_build_query($data))
-            ->setHeader('Content-Type', 'application/x-www-form-urlencoded')
+        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $xml)
+            ->setHeader('Content-Type', 'text/xml; charset=utf-8')
             ->send();
 
-        dd($httpResponse->getBody());
+        dd($httpResponse->xml());
 
-        return $this->createResponse($httpResponse->getBody());
+        return $this->createResponse($httpResponse->xml());
     }
 }
