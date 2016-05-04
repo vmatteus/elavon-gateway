@@ -2,10 +2,7 @@
 
 namespace Omnipay\Elavon\Message;
 
-use Omnipay\Common\CreditCard;
-use Omnipay\Common\Message\AbstractRequest;
-
-abstract class AbstractRequest extends AbstractRequest
+abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
     protected $testEndpoint = 'https://qaswsgate.elavon.com.br/wsgate/requesthandler';
     protected $liveEndpoint = 'https://wsgate.elavon.com.br/wsgate/requesthandler';
