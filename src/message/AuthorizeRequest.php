@@ -2,7 +2,7 @@
 
 namespace Omnipay\Elavon\Message;
 
-class ElavonAuthorizeRequest extends ElavonAbstractRequest
+class AuthorizeRequest extends AbstractRequest
 {
     
     public function getData()
