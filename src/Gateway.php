@@ -48,7 +48,7 @@ class Gateway extends AbstractGateway
      */
     public function authorize(array $parameters = array())
     {
-        return $this->createRequest('App\Models\Elavon\Message\ElavonAuthorizeRequest', $parameters);
+        return $this->createRequest('Omnipay\Elavon\Message\ElavonAuthorizeRequest', $parameters);
     }
 
     /**
@@ -57,6 +57,6 @@ class Gateway extends AbstractGateway
      */
     public function purchase(array $parameters = array())
     {
-        return $this->createRequest('App\Models\Elavon\Message\ElavonPurchaseRequest', $parameters);
+        return $this->createRequest('Omnipay\Elavon\Message\ElavonPurchaseRequest', $parameters);
     }
 }

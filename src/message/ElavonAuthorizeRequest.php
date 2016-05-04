@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Models\Elavon\Message;
+namespace Omnipay\Elavon\Message;
 
 class ElavonAuthorizeRequest extends ElavonAbstractRequest
 {
