@@ -13,7 +13,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "vmatteus/omnipay-vmatteus": "dev-master"
+        "vmatteus/omnipay-elavon": "dev-master"
     }
 }
 ```
