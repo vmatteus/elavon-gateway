@@ -2,12 +2,19 @@
 
 namespace Omnipay\Elavon\Message;
 
-class PurchaseRequest extends AuthorizeRequest
+class PurchaseRequest extends AbstractRequest
 {
     public function getData()
     {
-        $this->transactionType = 'ccsale';
+        $this->validate('amount');
 
-        return parent::getData();
+        $data = $this->createCommons('DoPaymentCapture');
+
+        $captureAmount = $data->addChild('CaptureAmount', $this->getAmountInteger());
+        $captureAmount->addAttribute('currencyCode', $this->getCurrency());
+
+        $data = $this->getMerchantDetails($data);
+
+        return $data;
     }
 }
