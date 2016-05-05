@@ -7,37 +7,25 @@ use Omnipay\Common\Message\RequestInterface;
 
 class Response extends AbstractResponse
 {
-    public function __construct(RequestInterface $request, $data)
-    {
-        $this->request = $request;
-        parse_str(implode('&', preg_split('/\n/', $data)), $this->data);
-    }
-
     public function isSuccessful()
     {
-        return (isset($this->data['ssl_result']) && $this->data['ssl_result'] == 0);
-    }
-
-    public function getTransactionReference()
-    {
-        return (isset($this->data['ssl_txn_id'])) ? $this->data['ssl_txn_id'] : null;
+        return ((String)$this->data->Ack == 'Success');
     }
 
     public function getMessage()
     {
-        if (!$this->isSuccessful()) {
-            return isset($this->data['errorMessage']) ? $this->data['errorMessage'] : null;
-        }
-
-        return isset($this->data['ssl_result_message']) ? $this->data['ssl_result_message'] : null;
+        if ($this->isSuccessful()) {
+            return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->ResponseMessage;
+            
+        } 
+        return (String) $this->data->ErrorDetails->ResponseMessage;
     }
 
     public function getCode()
     {
-        if (!$this->isSuccessful()) {
-            return isset($this->data['errorCode']) ? $this->data['errorCode'] : null;
+        if ($this->isSuccessful()) {
+            return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->ResponseCode;
         }
-
-        return $this->data['ssl_result'];
+        return (String) $this->data->ErrorDetails->ResponseCode;
     }
 }

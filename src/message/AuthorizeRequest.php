@@ -135,8 +135,6 @@ class AuthorizeRequest extends AbstractRequest
             ->setHeader('Content-Type', 'text/xml; charset=utf-8')
             ->send();
 
-        dd($httpResponse->xml());
-
-        return $this->createResponse($httpResponse->xml());
+        return $this->response = new Response($this, $httpResponse->xml());
     }
 }
