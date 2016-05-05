@@ -23,7 +23,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function setTerminalID($value)
     {
-        return $this->setParameter('TerminalID', $value);
+        $this->setParameter('TerminalID', $value);
     }
 
     public function getRegKey()
@@ -33,7 +33,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function setRegKey($value)
     {
-        return $this->setParameter('RegKey', $value);
+        $this->setParameter('RegKey', $value);
     }
 
     public function getAdditionalId()
@@ -43,7 +43,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function setAdditionalId($value)
     {
-        return $this->setParameter('AdditionalID', $value);
+        $this->setParameter('AdditionalID', $value);
     }
 
     public function getTransactionId()
@@ -53,11 +53,19 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function setTransactionId($value)
     {
-        return $this->setParameter('TransactionID', $value);
+        $this->setParameter('TransactionID', $value);
     }
 
     public function setTokenization($boolean) {
         return $this->setParameter('tokenization', $boolean);
+    }
+
+    public function setDynamicDBA($dynamicDBA){
+        $this->setParameter('DynamicDBA', $dynamicDBA);   
+    }
+
+    public function getDynamicDBA(){
+        return $this->getParameter('DynamicDBA');   
     }
 
     protected function getBaseData()
@@ -91,6 +99,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $merchantDetails = $data->addChild('MerchantDetails');
         $merchantDetails->addChild('TerminalID', $baseData['TerminalID']);
         $merchantDetails->addChild('RegKey', $baseData['RegKey']);
+        $merchantDetails->addChild('DynamicDBA', $this->getDynamicDBA());
         return $data;
     }
 

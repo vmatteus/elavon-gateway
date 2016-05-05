@@ -21,15 +21,39 @@ class AuthorizeRequest extends AbstractRequest
         $date->setTimezone( $sptm );
 
         $purchaseDetails->addChild('DateTime', $date->format('Y-m-d\TH:i:sP'));
-        $purchaseDetails->addChild('OrderDescription', $this->getDescription());
         
         return $data;
+    }
+
+    private function getBrandElavon($brand) 
+    {
+        switch ($brand) {
+            case 'mastercard':
+                return 'MA';
+                break;
+            
+            default:
+                return ucfirst($brand);
+                break;
+        }
+    }
+
+    public function getEciCard($brand) {
+        switch ($brand) {
+            case 'mastercard':
+                return 0;
+                break;
+            
+            default:
+                return 7;
+                break;
+        }
     }
 
     private function getPaymentRequestDetailsCard($data) 
     {
         $paymentRequestDetailsCard = $data->addChild('PaymentRequestDetails')->addChild('Card');
-        $paymentRequestDetailsCard->addChild('CardProduct', ucfirst($this->getCard()->getBrand(). '.Credit'));
+        $paymentRequestDetailsCard->addChild('CardProduct', $this->getBrandElavon($this->getCard()->getBrand()) . '.Credit');
 
         // Card Data for the Payment.
         // 1) Manually entered card data
@@ -54,7 +78,7 @@ class AuthorizeRequest extends AbstractRequest
 
         $paymentRequestDetailsCard->addChild('POSEntryCapability', '01');
         $paymentRequestDetailsCard->addChild('CardEntryMode', '01');
-        $paymentRequestDetailsCard->addChild('ECI', 7);
+        $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($this->getCard()->getBrand()));
 
         if ($this->getParameter('tokenization')) {
             $tokenSettingDetails = $paymentRequestDetailsCard->addChild('TokenSettingDetails');
