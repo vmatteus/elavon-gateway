@@ -17,8 +17,8 @@ class Gateway extends AbstractGateway
     public function getDefaultParameters()
     {
         return array(
-            'TerminalID' => $this->getTerminalId(),
-            'RegKey'   => $this->getRegKey()
+            'TerminalID' => '',
+            'RegKey'   => ''
         );
     }
 
@@ -29,7 +29,7 @@ class Gateway extends AbstractGateway
 
     public function setTerminalId($terminalId)
     {
-        return $this->getParameter('TerminalID', $terminalId);
+        return $this->setParameter('TerminalID', $terminalId);
     }
 
     public function getRegKey()
@@ -39,7 +39,7 @@ class Gateway extends AbstractGateway
 
     public function setRegKey($regKey)
     {
-        return $this->getParameter('RegKey', $regKey);
+        return $this->setParameter('RegKey', $regKey);
     }
 
     /**

@@ -10,7 +10,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function getEndpoint()
     {
         return ($this->getTestMode()) ? $this->testEndpoint : $this->liveEndpoint;
-    }    
+    }
 
     public function getTerminalID()
     {
@@ -30,6 +30,26 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function setRegKey($value)
     {
         return $this->setParameter('RegKey', $value);
+    }
+
+    public function getAdditionalId()
+    {
+        return $this->getParameter('AdditionalID');
+    }
+
+    public function setAdditionalId($value)
+    {
+        return $this->setParameter('AdditionalID', $value);
+    }
+
+    public function getTransactionId()
+    {
+        return $this->getParameter('TransactionID');
+    }
+
+    public function setTransactionId($value)
+    {
+        return $this->setParameter('TransactionID', $value);
     }
 
     protected function getBaseData()
