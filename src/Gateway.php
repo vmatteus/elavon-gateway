@@ -42,6 +42,10 @@ class Gateway extends AbstractGateway
         return $this->setParameter('RegKey', $regKey);
     }
 
+    public function setTokenization($boolean) {
+        return $this->setParameter('tokenization', $boolean);
+    }
+
     /**
      * @param array $parameters
      * @return \Omnipay\Elavon\Message\AuthorizeRequest
