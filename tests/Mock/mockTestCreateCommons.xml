@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<DoPaymentTest version="1.1.0" xmlns="http://wsgate.elavon.com.br">
+    <Language>PT-BR</Language>
+    <MerchantDetails>
+        <TerminalID>0019410000000000000001</TerminalID>
+        <RegKey>FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</RegKey>
+        <DynamicDBA>TestMerchant</DynamicDBA>
+    </MerchantDetails>
+</DoPaymentTest>

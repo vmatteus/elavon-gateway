@@ -7,14 +7,9 @@ class PurchaseRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('amount');
-
         $data = $this->createCommons('DoPaymentCapture');
-
-        $data->addChild('TransactionID', $this->getTransactionId());
-
         $captureAmount = $data->addChild('CaptureAmount', $this->getAmountInteger());
         $captureAmount->addAttribute('currencyCode', $this->getCurrency());
-
         return $data;
     }
 }

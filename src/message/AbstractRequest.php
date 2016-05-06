@@ -60,45 +60,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('tokenization', $boolean);
     }
 
+    public function getTokenization() {
+        return $this->getParameter('tokenization');
+    }
+
     public function setDynamicDBA($dynamicDBA){
         $this->setParameter('DynamicDBA', $dynamicDBA);   
     }
 
     public function getDynamicDBA(){
         return $this->getParameter('DynamicDBA');   
-    }
-
-    protected function getBaseData()
-    {
-        $data = array(
-            'TerminalID' => $this->getTerminalID(),
-            'RegKey' => $this->getRegKey(),
-        );
-
-        return $data;
-    }
-
-    protected function createCommons($transactionName) 
-    {
-        $data = new \SimpleXMLElement('<'. $transactionName .' />');
-        $data->addAttribute('version', self::ELAVON_VERSION );
-        $data->addAttribute('xmlns', self::ELAVON_XMLNS);
-
-        $data->addChild('Language', self::ELAVON_LANGUAGE);
-        
-        $data = $this->getMerchantDetails($data);
-
-        return $data;
-    }
-
-    protected function getMerchantDetails($data) 
-    {
-        $baseData = $this->getBaseData();
-        $merchantDetails = $data->addChild('MerchantDetails');
-        $merchantDetails->addChild('TerminalID', $baseData['TerminalID']);
-        $merchantDetails->addChild('RegKey', $baseData['RegKey']);
-        $merchantDetails->addChild('DynamicDBA', $this->getDynamicDBA());
-        return $data;
     }
 
     protected function getIpAddress() 
@@ -117,6 +88,43 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         else if(getenv('REMOTE_ADDR'))
             $ipaddress = getenv('REMOTE_ADDR');
         return $ipaddress;
+    }
+
+    private function getMerchantDetails($data) 
+    {
+        $merchantDetails = $data->addChild('MerchantDetails');
+        $merchantDetails->addChild('TerminalID', $this->getTerminalID());
+        $merchantDetails->addChild('RegKey', $this->getRegKey());
+        if ($this->getDynamicDBA()) {
+            $merchantDetails->addChild('DynamicDBA', $this->getDynamicDBA());    
+        }
+        return $data;
+    }
+
+    public function createCommons($transactionName, $setTransactionId = 1, $setPaymentAction = 1, $setIpAddress = 1) 
+    {
+        $data = new \SimpleXMLElement('<'. $transactionName .' />');
+        $data->addAttribute('version', self::ELAVON_VERSION );
+        $data->addAttribute('xmlns', self::ELAVON_XMLNS);
+        $data->addChild('Language', self::ELAVON_LANGUAGE);
+        
+        if ($setTransactionId) {
+            // Existent TransactionID from which the above TransactionID will be grouped. 
+            // Note: Required for PaymentAction=Create mode. Optional for the other modes. If set, will be informative only.
+            $data->addChild('TransactionID', $this->getTransactionId());
+        }
+
+        if ($setTransactionId) {
+            $data->addChild('PaymentAction', 'Auth');
+        }
+
+        if ($setIpAddress) {
+            $data->addChild('IPAddress', $this->getIpAddress());
+        }
+
+        $data = $this->getMerchantDetails($data);
+
+        return $data;
     }
 
     public function sendData($data)

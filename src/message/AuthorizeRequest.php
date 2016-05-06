@@ -95,14 +95,6 @@ class AuthorizeRequest extends AbstractRequest
 
         $data = $this->createCommons('DoPayment');
 
-        // Existent TransactionID from which the above TransactionID will be grouped. 
-        // Note: Required for PaymentAction=Create mode. Optional for the other modes. If set, will be informative only.
-        $data->addChild('TransactionID', $this->getTransactionId());
-
-        $data->addChild('PaymentAction', 'Auth');
-        
-        $data->addChild('IPAddress', $this->getIpAddress());
-
         $data = $this->getPurchaseDetails($data);
         $data = $this->getPaymentRequestDetailsCard($data);
 
