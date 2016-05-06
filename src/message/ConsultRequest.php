@@ -2,7 +2,7 @@
 
 namespace Omnipay\Elavon\Message;
 
-class PurchaseRequest extends AbstractRequest
+class ConsultRequest extends AbstractRequest
 {
     public function getData()
     {
