@@ -28,4 +28,10 @@ class Response extends AbstractResponse
         }
         return (String) $this->data->ErrorDetails->ResponseCode;
     }
+
+    public function getToken() {
+        if (isset($this->data->PaymentResponseDetails->Card->AuthorizationDetails->Token)) {
+            return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->Token;
+        }
+    }
 }
