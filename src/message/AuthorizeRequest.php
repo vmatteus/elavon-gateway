@@ -95,6 +95,10 @@ class AuthorizeRequest extends AbstractRequest
 
         $data = $this->createCommons('DoPayment');
 
+        $data = $this->getTransactionIdXml($data);
+        $data = $this->getPaymentActionXml($data);
+        $data = $this->getIpAddressXml($data);
+        $data = $this->getMerchantDetails($data);
         $data = $this->getPurchaseDetails($data);
         $data = $this->getPaymentRequestDetailsCard($data);
 

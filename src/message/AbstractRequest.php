@@ -101,28 +101,29 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $data;
     }
 
-    public function createCommons($transactionName, $setTransactionId = 1, $setPaymentAction = 1, $setIpAddress = 1) 
+    protected function getTransactionIdXml($data) {
+        // Existent TransactionID from which the above TransactionID will be grouped. 
+        // Note: Required for PaymentAction=Create mode. Optional for the other modes. If set, will be informative only.
+        $data->addChild('TransactionID', $this->getTransactionId());
+        return $data;
+    }
+
+    protected function getPaymentActionXml($data) {
+        $data->addChild('PaymentAction', 'Auth');
+        return $data;
+    }
+
+    protected function getIpAddressXml($data) {
+        $data->addChild('IPAddress', $this->getIpAddress());
+        return $data;
+    }
+
+    public function createCommons($transactionName) 
     {
         $data = new \SimpleXMLElement('<'. $transactionName .' />');
         $data->addAttribute('version', self::ELAVON_VERSION );
         $data->addAttribute('xmlns', self::ELAVON_XMLNS);
         $data->addChild('Language', self::ELAVON_LANGUAGE);
-        
-        if ($setTransactionId) {
-            // Existent TransactionID from which the above TransactionID will be grouped. 
-            // Note: Required for PaymentAction=Create mode. Optional for the other modes. If set, will be informative only.
-            $data->addChild('TransactionID', $this->getTransactionId());
-        }
-
-        if ($setTransactionId) {
-            $data->addChild('PaymentAction', 'Auth');
-        }
-
-        if ($setIpAddress) {
-            $data->addChild('IPAddress', $this->getIpAddress());
-        }
-
-        $data = $this->getMerchantDetails($data);
 
         return $data;
     }
