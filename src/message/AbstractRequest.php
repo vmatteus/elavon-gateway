@@ -85,10 +85,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $data->addAttribute('xmlns', self::ELAVON_XMLNS);
 
         $data->addChild('Language', self::ELAVON_LANGUAGE);
-
-        // Existent TransactionID from which the above TransactionID will be grouped. 
-        // Note: Required for PaymentAction=Create mode. Optional for the other modes. If set, will be informative only.
-        $data->addChild('TransactionID', $this->getTransactionId());
+        
+        $data = $this->getMerchantDetails($data);
 
         return $data;
     }
