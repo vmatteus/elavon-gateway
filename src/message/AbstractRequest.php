@@ -90,7 +90,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $ipaddress;
     }
 
-    private function getMerchantDetails($data) 
+    protected function getMerchantDetails($data) 
     {
         $merchantDetails = $data->addChild('MerchantDetails');
         $merchantDetails->addChild('TerminalID', $this->getTerminalID());
