@@ -12,7 +12,7 @@ class PurchaseRequest extends AbstractRequest
         $data = $this->getTransactionIdXml($data);
         $captureAmount = $data->addChild('CaptureAmount', $this->getAmountInteger());
         $captureAmount->addAttribute('currencyCode', $this->getCurrency());
-        $data = $this->getTransactionIdXml($data);
+        $data = $this->getMerchantDetails($data);
         return $data;
     }
 }
