@@ -6,7 +6,6 @@ use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
 {
-
     private $transaction_id;
     public function setUp()
     {
@@ -15,7 +14,7 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setTerminalId('0019410000000000000001');
         $this->gateway->setRegKey('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
         $this->gateway->setTestMode(1);
-        $this->transaction_id = uniqid();
+        $this->transaction_id = 2000; // Tem que mudar o id, ou modificar e mock os requests
     }
 
     public function testSendSuccess()
@@ -36,7 +35,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertInstanceOf('Omnipay\Elavon\Message\AuthorizeRequest', $request);
         $response = $request->send();
         $this->assertTrue($response->isSuccessful());
-
     }
 
     public function testSendFailure()
@@ -58,7 +56,6 @@ class GatewayTest extends GatewayTestCase
         $this->assertInstanceOf('Omnipay\Elavon\Message\AuthorizeRequest', $request);
         $response = $request->send();
         $this->assertFalse($response->isSuccessful());
-
     }
 
     public function testPurchaseSuccess()
@@ -68,12 +65,49 @@ class GatewayTest extends GatewayTestCase
             'currency'      => 'BRL',
             'TransactionID' => $this->transaction_id,
         ]);
-        
         $this->assertInstanceOf('Omnipay\Elavon\Message\PurchaseRequest', $request);
-        
+        $response = $request->send();
+        $this->assertTrue($response->isSuccessful());
+    }
+
+    public function testConsultSuccess()
+    {
+        $request = $this->gateway->consult([
+            'TransactionID' => 1,
+        ]);
+        $this->assertInstanceOf('Omnipay\Elavon\Message\ConsultRequest', $request);
+        $response = $request->send();
+        $this->assertTrue($response->isSuccessful());
+    }
+
+    public function testConsultFailure()
+    {
+        $request = $this->gateway->consult([
+            'TransactionID' => $this->transaction_id . '_LOL'
+        ]);
+        $this->assertInstanceOf('Omnipay\Elavon\Message\ConsultRequest', $request);
         $response = $request->send();
         $this->assertFalse($response->isSuccessful());
+    }
 
+    public function testCancelSuccess()
+    {
+        $request = $this->gateway->cancel([
+            'TransactionID' => $this->transaction_id
+        ]);
+        $this->assertInstanceOf('Omnipay\Elavon\Message\CancelRequest', $request);
+        $response = $request->send();
+        $this->assertTrue($response->isSuccessful());
+    }
+
+    public function testCancelFailure()
+    {
+        $request = $this->gateway->cancel([
+            'TransactionID' => $this->transaction_id . '_LOL'
+        ]);
+        $this->assertInstanceOf('Omnipay\Elavon\Message\CancelRequest', $request);
+        $response = $request->send();
+        $this->assertFalse($response->isSuccessful());
     }
 
 }
