@@ -76,7 +76,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $this->setParameter('Recurring', $recurring);
     }
 
-    public function getRecurring($recurring) {
+    public function getRecurring() {
         return $this->getParameter('Recurring');
     }
 
