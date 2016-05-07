@@ -14,7 +14,7 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setTerminalId('0019410000000000000001');
         $this->gateway->setRegKey('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
         $this->gateway->setTestMode(1);
-        $this->transaction_id = 2012; // Tem que mudar o id, ou modificar e mock os requests
+        $this->transaction_id = 2013; // Tem que mudar o id, ou modificar e mock os requests
     }
 
     public function testSendSuccess()

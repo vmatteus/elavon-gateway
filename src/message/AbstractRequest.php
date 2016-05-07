@@ -80,6 +80,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('Recurring');
     }
 
+    public function setTokenIndicator($tokenIndicator) {
+        $this->setParameter('TokenIndicator', $tokenIndicator);
+    }
+
+    public function getTokenIndicator() {
+        return $this->getParameter('TokenIndicator');
+    }
+
     protected function getIpAddress() 
     {
         $ipaddress = '0.0.0.0';

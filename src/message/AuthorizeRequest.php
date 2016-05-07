@@ -67,6 +67,10 @@ class AuthorizeRequest extends AbstractRequest
         $expYear  = substr($this->getCard()->getExpiryYear(), -2, 2);
         $cardData = $cardData . '=' . $expMonth . $expYear;
         $paymentRequestDetailsCard->addChild('CardData', $cardData);
+
+        if ($this->getTokenIndicator()) {
+            $paymentRequestDetailsCard->addChild('TokenIndicator', 1);
+        }
         
         if ($this->getCard()->getCvv()) {
             $paymentRequestDetailsCard->addChild('CVV2Indicator', 1);
