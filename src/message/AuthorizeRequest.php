@@ -53,8 +53,14 @@ class AuthorizeRequest extends AbstractRequest
     private function getPaymentRequestDetailsCard($data) 
     {
         $paymentRequestDetailsCard = $data->addChild('PaymentRequestDetails')->addChild('Card');
-        $paymentRequestDetailsCard->addChild('CardProduct', $this->getBrandElavon($this->getCard()->getBrand()) . '.Credit');
 
+        $brand = $this->getBrandElavon($this->getCard()->getBrand());
+
+        if (empty($brand)) {
+            throw new \Exception("Não foi possível definir a bandeira do cartão");
+        }
+        
+        $paymentRequestDetailsCard->addChild('CardProduct', $brand . '.Credit');
         // Card Data for the Payment.
         // 1) Manually entered card data
         // CardNumber=CardExpiration (MMYY)
@@ -105,13 +111,16 @@ class AuthorizeRequest extends AbstractRequest
 
     public function getData()
     {
+        
         if ($this->getTokenIndicator()) {
             $this->validate('amount');
         } else {
-            $this->validate('amount', 'card');
-            $this->getCard()->validate();
+           $this->validate('amount', 'card');
+           $this->getCard()->validate();
         }
 
+        $this->validate('amount');
+        
         $data = $this->createCommons('DoPayment');
 
         $data = $this->getTransactionIdXml($data);
