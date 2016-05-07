@@ -105,8 +105,12 @@ class AuthorizeRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'card');
-        $this->getCard()->validate();
+        if ($this->getTokenIndicator()) {
+            $this->validate('amount');
+        } else {
+            $this->validate('amount', 'card');
+            $this->getCard()->validate();
+        }
 
         $data = $this->createCommons('DoPayment');
 
