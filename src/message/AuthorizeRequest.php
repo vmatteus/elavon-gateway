@@ -54,12 +54,16 @@ class AuthorizeRequest extends AbstractRequest
     {
         $paymentRequestDetailsCard = $data->addChild('PaymentRequestDetails')->addChild('Card');
 
-        $brand = $this->getBrandElavon($this->getCard()->getBrand());
 
-        if (empty($brand)) {
-            throw new \Exception("Não foi possível definir a bandeira do cartão");
+        if ($this->getManualBrand()) {
+            $brand = $this->getBrandElavon($this->getManualBrand());
+        } else {
+            if (empty($this->getCard()->getBrand())) {
+                throw new \Exception("Não foi possível definir a bandeira do cartão");
+            }
+            $brand = $this->getBrandElavon($this->getCard()->getBrand());
         }
-        
+
         $paymentRequestDetailsCard->addChild('CardProduct', $brand . '.Credit');
         // Card Data for the Payment.
         // 1) Manually entered card data

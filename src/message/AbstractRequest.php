@@ -88,6 +88,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('TokenIndicator');
     }
 
+    public function setManualBrand($brand) {
+        $this->setParameter('manualBrand', $brand);
+    }
+
+    public function getManualBrand() {
+        return $this->getParameter('manualBrand');
+    }
+
     protected function getIpAddress() 
     {
         $ipaddress = '0.0.0.0';

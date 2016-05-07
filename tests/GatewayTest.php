@@ -14,7 +14,7 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setTerminalId('0019410000000000000001');
         $this->gateway->setRegKey('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
         $this->gateway->setTestMode(1);
-        $this->transaction_id = 2017; // Tem que mudar o id, ou modificar e mock os requests
+        $this->transaction_id = 2018; // Tem que mudar o id, ou modificar e mock os requests
     }
 
     public function testSendSuccess()
@@ -71,6 +71,7 @@ class GatewayTest extends GatewayTestCase
                         'AdditionalID'  => 1,
                         'TransactionID' => 1,
                         'TokenIndicator'=> 1,
+                        'manualBrand'   => 'visa',
                         'card' => [
                             'number'      => 'B8F9A9C7D8C3C342106098924BB0158C3333'
                         ]
