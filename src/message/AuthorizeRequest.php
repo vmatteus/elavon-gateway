@@ -71,14 +71,25 @@ class AuthorizeRequest extends AbstractRequest
         if ($this->getCard()->getCvv()) {
             $paymentRequestDetailsCard->addChild('CVV2Indicator', 1);
             $paymentRequestDetailsCard->addChild('CVV2', $this->getCard()->getCvv());
+        } else {
+            $paymentRequestDetailsCard->addChild('CVV2Indicator', 0);
         }
         
         $authorizationAmount = $paymentRequestDetailsCard->addChild('AuthorizationAmount', $this->getAmountInteger());
         $authorizationAmount->addAttribute('currencyCode', $this->getCurrency());
 
+        $eci_send = 1;
+        if ($this->getRecurring()) {
+            $paymentRequestDetailsCard->addChild('Recurring', 1);
+            $eci_send = 0;
+        } 
+
         $paymentRequestDetailsCard->addChild('POSEntryCapability', '01');
         $paymentRequestDetailsCard->addChild('CardEntryMode', '01');
-        $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($this->getCard()->getBrand()));
+        
+        if ($eci_send) {
+            $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($this->getCard()->getBrand()));
+        }
 
         if ($this->getParameter('tokenization')) {
             $tokenSettingDetails = $paymentRequestDetailsCard->addChild('TokenSettingDetails');

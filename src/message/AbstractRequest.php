@@ -72,6 +72,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('DynamicDBA');   
     }
 
+    public function setRecurring($recurring) {
+        $this->setParameter('Recurring', $recurring);
+    }
+
+    public function getRecurring($recurring) {
+        return $this->getParameter('Recurring');
+    }
+
     protected function getIpAddress() 
     {
         $ipaddress = '0.0.0.0';
