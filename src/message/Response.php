@@ -34,4 +34,17 @@ class Response extends AbstractResponse
             return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->Token;
         }
     }
+
+    public function getStatus() {
+        return (String) $this->data->StatusCode;
+    }
+
+    public function getResponseStatus() {
+        if ($this->isSuccessful()) {
+            return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->IssuerResponseCode;
+        } else {
+            return (String) $this->data->StatusCode;
+        }
+    }
+    
 }
