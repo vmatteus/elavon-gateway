@@ -104,7 +104,7 @@ class AuthorizeRequest extends AbstractRequest
             $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($this->getCard()->getBrand()));
         }
 
-        if ($this->getParameter('tokenization')) {
+        if ($this->getParameter('tokenization') && !$this->getTokenIndicator()) {
             $tokenSettingDetails = $paymentRequestDetailsCard->addChild('TokenSettingDetails');
             $tokenSettingDetails->addChild('Format', 'Strong');
         }
@@ -121,8 +121,6 @@ class AuthorizeRequest extends AbstractRequest
            $this->validate('amount', 'card');
            $this->getCard()->validate();
         }
-
-        $this->validate('amount');
         
         $data = $this->createCommons('DoPayment');
 
