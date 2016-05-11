@@ -65,18 +65,17 @@ class AuthorizeRequest extends AbstractRequest
         }
 
         $paymentRequestDetailsCard->addChild('CardProduct', $brand . '.Credit');
-        // Card Data for the Payment.
-        // 1) Manually entered card data
-        // CardNumber=CardExpiration (MMYY)
-        // e.g.: 4444111122223333=0715
-        // 2) Track 1 or 2 data as read with the start
-        // and end sentinels removed. e.g.:B4444111122223333^ELAVON TEST CARD^1507101543213961456
-        // 3) Token value e.g.:1ED66AA3903549DB9B01CAA76455B9C00715
-        $cardData = $this->getCard()->getNumber();
-        $expMonth = $this->getCard()->getExpiryMonth();
-        $expYear  = substr($this->getCard()->getExpiryYear(), -2, 2);
-        $cardData = $cardData . '=' . $expMonth . $expYear;
-        $paymentRequestDetailsCard->addChild('CardData', $cardData);
+        
+        if ($this->getTokenIndicator()) {
+            $cardData = $this->getCard()->getNumber();
+            $paymentRequestDetailsCard->addChild('CardData', $cardData);
+        } else {
+            $cardData = $this->getCard()->getNumber();
+            $expMonth = $this->getCard()->getExpiryMonth();
+            $expYear  = substr($this->getCard()->getExpiryYear(), -2, 2);
+            $cardData = $cardData . '=' . $expMonth . $expYear;
+            $paymentRequestDetailsCard->addChild('CardData', $cardData);
+        }
 
         if ($this->getTokenIndicator()) {
             $paymentRequestDetailsCard->addChild('TokenIndicator', 1);

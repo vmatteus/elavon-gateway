@@ -46,5 +46,13 @@ class Response extends AbstractResponse
             return (String) $this->data->StatusCode;
         }
     }
+
+    public function getTransactionId() {
+        if ($this->isSuccessful()) {
+            return (String) $this->data->TransactionID;
+        } else {
+            return (String) $this->data->ErrorDetails->TransactionID;
+        }
+    }
     
 }
