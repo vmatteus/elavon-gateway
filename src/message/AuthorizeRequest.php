@@ -71,7 +71,7 @@ class AuthorizeRequest extends AbstractRequest
             $paymentRequestDetailsCard->addChild('CardData', $cardData);
         } else {
             $cardData = $this->getCard()->getNumber();
-            $expMonth = $this->getCard()->getExpiryMonth();
+            $expMonth = str_pad($this->getCard()->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
             $expYear  = substr($this->getCard()->getExpiryYear(), -2, 2);
             $cardData = $cardData . '=' . $expMonth . $expYear;
             $paymentRequestDetailsCard->addChild('CardData', $cardData);
