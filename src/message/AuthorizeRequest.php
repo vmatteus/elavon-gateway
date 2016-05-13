@@ -25,31 +25,6 @@ class AuthorizeRequest extends AbstractRequest
         return $data;
     }
 
-    private function getBrandElavon($brand) 
-    {
-        switch ($brand) {
-            case 'mastercard':
-                return 'MA';
-                break;
-            
-            default:
-                return ucfirst($brand);
-                break;
-        }
-    }
-
-    public function getEciCard($brand) {
-        switch ($brand) {
-            case 'mastercard':
-                return 0;
-                break;
-            
-            default:
-                return 7;
-                break;
-        }
-    }
-
     private function getPaymentRequestDetailsCard($data) 
     {
         $paymentRequestDetailsCard = $data->addChild('PaymentRequestDetails')->addChild('Card');
@@ -58,7 +33,11 @@ class AuthorizeRequest extends AbstractRequest
         if ($this->getManualBrand()) {
             $brand = $this->getBrandElavon($this->getManualBrand());
         } else {
-            if (empty($this->getCard()->getBrand())) {
+            if($this->getCard()) {
+                if (empty($this->getCard()->getBrand())) {
+                    throw new \Exception("Não foi possível definir a bandeira do cartão");
+                }
+            } else {
                 throw new \Exception("Não foi possível definir a bandeira do cartão");
             }
             $brand = $this->getBrandElavon($this->getCard()->getBrand());
@@ -67,7 +46,7 @@ class AuthorizeRequest extends AbstractRequest
         $paymentRequestDetailsCard->addChild('CardProduct', $brand . '.Credit');
         
         if ($this->getTokenIndicator()) {
-            $cardData = $this->getCard()->getNumber();
+            $cardData = $this->getTokenString();
             $paymentRequestDetailsCard->addChild('CardData', $cardData);
         } else {
             $cardData = $this->getCard()->getNumber();
@@ -81,12 +60,15 @@ class AuthorizeRequest extends AbstractRequest
             $paymentRequestDetailsCard->addChild('TokenIndicator', 1);
         }
         
-        if ($this->getCard()->getCvv()) {
-            $paymentRequestDetailsCard->addChild('CVV2Indicator', 1);
-            $paymentRequestDetailsCard->addChild('CVV2', $this->getCard()->getCvv());
-        } else {
-            $paymentRequestDetailsCard->addChild('CVV2Indicator', 0);
+        if ($this->getCard()) {
+            if ($this->getCard()->getCvv()) {
+                $paymentRequestDetailsCard->addChild('CVV2Indicator', 1);
+                $paymentRequestDetailsCard->addChild('CVV2', $this->getCard()->getCvv());
+            } else {
+                $paymentRequestDetailsCard->addChild('CVV2Indicator', 0);
+            }    
         }
+        
         
         $authorizationAmount = $paymentRequestDetailsCard->addChild('AuthorizationAmount', $this->getAmountInteger());
         $authorizationAmount->addAttribute('currencyCode', $this->getCurrency());
@@ -101,7 +83,7 @@ class AuthorizeRequest extends AbstractRequest
         $paymentRequestDetailsCard->addChild('CardEntryMode', '01');
         
         if ($eci_send) {
-            $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($this->getCard()->getBrand()));
+            $paymentRequestDetailsCard->addChild('ECI', $this->getEciCard($brand));
         }
 
         if ($this->getParameter('tokenization') && !$this->getTokenIndicator()) {

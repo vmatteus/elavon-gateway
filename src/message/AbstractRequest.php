@@ -96,6 +96,14 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('manualBrand');
     }
 
+    public function setTokenString($token) {
+        $this->setParameter('tokenString', $token);
+    }
+
+    public function getTokenString() {
+        return $this->getParameter('tokenString');
+    }
+
     protected function getIpAddress() 
     {
         $ipaddress = '0.0.0.0';
@@ -138,6 +146,31 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $data->addChild('Language', self::ELAVON_LANGUAGE);
 
         return $data;
+    }
+
+    protected function getBrandElavon($brand) 
+    {
+        switch ($brand) {
+            case 'mastercard':
+                return 'MA';
+                break;
+            
+            default:
+                return ucfirst($brand);
+                break;
+        }
+    }
+
+    public function getEciCard($brand) {
+        switch ($brand) {
+            case 'MA':
+                return 0;
+                break;
+            
+            default:
+                return 7;
+                break;
+        }
     }
 
     public function sendData($data)

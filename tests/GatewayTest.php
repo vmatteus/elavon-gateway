@@ -14,7 +14,7 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setTerminalId('0019410000000000000001');
         $this->gateway->setRegKey('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
         $this->gateway->setTestMode(1);
-        $this->transaction_id = 2018; // Tem que mudar o id, ou modificar e mock os requests
+        $this->transaction_id = 5045; // Tem que mudar o id, ou modificar e mock os requests
     }
 
     public function testSendSuccess()
@@ -63,23 +63,21 @@ class GatewayTest extends GatewayTestCase
 
     public function testTokenSuccess()
     {
-        // Transaction id já existe, da duplicada
+
         $request = $this->gateway->authorize(
                     [
                         'amount'        => '10.00',
                         'currency'      => 'BRL',
                         'AdditionalID'  => 1,
-                        'TransactionID' => 1,
+                        'TransactionID' => $this->transaction_id+2,
                         'TokenIndicator'=> 1,
                         'manualBrand'   => 'visa',
-                        'card' => [
-                            'number'      => 'B8F9A9C7D8C3C342106098924BB0158C3333'
-                        ]
+                        'tokenString'   => 'DCCEF25609D73C428AF5AF3E69403B8A8916'
                     ]);
 
         $this->assertInstanceOf('Omnipay\Elavon\Message\AuthorizeRequest', $request);
         $response = $request->send();
-        $this->assertFalse($response->isSuccessful());
+        $this->assertTrue($response->isSuccessful());
     }
 
     public function testPurchaseSuccess()
@@ -97,7 +95,7 @@ class GatewayTest extends GatewayTestCase
     public function testConsultSuccess()
     {
         $request = $this->gateway->consult([
-            'TransactionID' => 1,
+            'TransactionID' => $this->transaction_id,
         ]);
         $this->assertInstanceOf('Omnipay\Elavon\Message\ConsultRequest', $request);
         $response = $request->send();

@@ -66,6 +66,24 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
+     * @return \Omnipay\Elavon\Message\TokenRequest
+     */
+    public function token(array $parameters = array())
+    {
+        return $this->createRequest('Omnipay\Elavon\Message\TokenRequest', $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     * @return \Omnipay\Elavon\Message\TokenRequest
+     */
+    public function tokenValidation(array $parameters = array())
+    {
+        return $this->createRequest('Omnipay\Elavon\Message\TokenValidationRequest', $parameters);
+    }
+
+    /**
+     * @param array $parameters
      * @return \Omnipay\Elavon\Message\ConsultRequest
      */
     public function consult(array $parameters = array())
@@ -75,7 +93,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omnipay\Elavon\Message\ConsultRequest
+     * @return \Omnipay\Elavon\Message\CancelRequest
      */
     public function cancel(array $parameters = array())
     {
