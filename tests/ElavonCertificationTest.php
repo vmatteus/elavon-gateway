@@ -17,13 +17,13 @@ class ElavonCertificationTest extends TestCase
         $this->gateway->setTerminalId('0019410000000000000001');
         $this->gateway->setRegKey('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
         $this->gateway->setTestMode(1);
-        $this->transaction_id = 5010; // Tem que mudar o id, ou modificar e mock os requests
+        $this->transaction_id = 6040; // Tem que mudar o id, ou modificar e mock os requests
     }
 
     public function testDoPaymentSslToken() {
 
         // Coloquei isso pro teste não rodar
-        return true;
+        //return true;
 
         $request = $this->gateway->token(
         [
@@ -41,16 +41,16 @@ class ElavonCertificationTest extends TestCase
 
         $token = (String) $responseToken->getData()->Token[0];
 
-        $request = $this->gateway->tokenValidation(
-        [
-            'TransactionID' => $this->transaction_id+1,
-            'manualBrand'   => 'visa',
-            'tokenString'   => 'DCCEF25609D73C428AF5AF3E69403B8A8916'
-        ]);
+        // $request = $this->gateway->tokenValidation(
+        // [
+        //     'TransactionID' => $this->transaction_id+1,
+        //     'manualBrand'   => 'visa',
+        //     'tokenString'   => $token
+        // ]);
 
-        $responseValidation = $request->send();
+        // $responseValidation = $request->send();
 
-        print_r($responseValidation->getData());
+        // print_r($responseValidation->getData());
 
         $request = $this->gateway->authorize(
                 [
@@ -60,7 +60,7 @@ class ElavonCertificationTest extends TestCase
                     'TransactionID' => $this->transaction_id+2,
                     'TokenIndicator'=> 1,
                     'manualBrand'   => 'visa',
-                    'tokenString'   => 'DCCEF25609D73C428AF5AF3E69403B8A8916'
+                    'tokenString'   => $token
                 ]);
 
         $response = $request->send();

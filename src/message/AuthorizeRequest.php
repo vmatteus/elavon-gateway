@@ -67,8 +67,9 @@ class AuthorizeRequest extends AbstractRequest
             } else {
                 $paymentRequestDetailsCard->addChild('CVV2Indicator', 0);
             }    
+        } else {
+            $paymentRequestDetailsCard->addChild('CVV2Indicator', 0);
         }
-        
         
         $authorizationAmount = $paymentRequestDetailsCard->addChild('AuthorizationAmount', $this->getAmountInteger());
         $authorizationAmount->addAttribute('currencyCode', $this->getCurrency());
