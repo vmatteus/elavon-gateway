@@ -32,6 +32,8 @@ class Response extends AbstractResponse
     public function getToken() {
         if (isset($this->data->PaymentResponseDetails->Card->AuthorizationDetails->Token)) {
             return (String) $this->data->PaymentResponseDetails->Card->AuthorizationDetails->Token;
+        } else {
+            return '';
         }
     }
 
