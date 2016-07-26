@@ -186,6 +186,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             ->setHeader('Content-Type', 'text/xml; charset=utf-8')
             ->send();
 
+        print_r($httpResponse->xml());
+        die();
+
         return $this->response = new Response($this, $httpResponse->xml());
     }
 
